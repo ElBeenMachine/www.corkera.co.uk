@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Style+Script&display=swap");
+
+body,
+html {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    width: 100%;
+}
+
+body {
+    height: calc(100% - 80px);
+}
+
+nav h1 {
+    font-family: "Style Script", cursive;
+    font-size: 2.5rem;
+    color: #f8f8f8;
+}
+
+#work-description * {
+    font-size: revert;
+    font-weight: revert;
+    line-height: revert;
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+#work-description h1:not(:first-of-type),
+h2:not(:first-of-type),
+h3:not(:first-of-type),
+h4:not(:first-of-type),
+h5:not(:first-of-type),
+h6:not(:first-of-type) {
+    margin-top: 30px;
+}
+
+#work-description img {
+    max-height: 500px;
+    margin-top: 20px;
+}
+
+#work-description li {
+    padding-left: 40px;
+}
+
+#work-description p {
+    margin-top: 10px;
+}
+
+#work-description a {
+    color: #c3abab;
+    text-decoration: underline;
+    transition-duration: 0.2s;
+}
+
+#work-description a:hover {
+    color: #ffdede;
+}
