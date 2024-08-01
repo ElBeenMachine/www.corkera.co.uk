@@ -5,7 +5,6 @@
 import work from "@/lib/work/work";
 import WorkContent from "@/components/WorkContent";
 import { Suspense } from "react";
-import { Loading } from "@/components/LoadingSkeleton";
 
 export async function generateMetadata({ params }: { params: { uuid: string } }) {
     // Loop through all the works and find the one with the matching uuid

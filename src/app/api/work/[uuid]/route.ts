@@ -4,7 +4,7 @@
 
 import { readFileSync } from "fs";
 import { NextResponse } from "next/server";
-import { parse } from "marked";
+import { marked } from "marked";
 import work from "@/lib/work/work";
 
 export async function GET(req: Request, { params }: { params: { uuid: string } }) {
@@ -36,6 +36,19 @@ export async function GET(req: Request, { params }: { params: { uuid: string } }
     // Introduce a 2-second delay using a Promise
     await new Promise((resolve) => setTimeout(resolve, 300));
 
+    // Create a custom renderer
+    const renderer = new marked.Renderer();
+
+    // Override the link rendering method
+    renderer.link = ({ href, title, tokens }) => {
+        return `<a href="${href}" target="_blank">${title || href}</a>`;
+    };
+
+    // Set the custom renderer to marked
+    marked.setOptions({
+        renderer: renderer,
+    });
+
     // Return the project and the parsed description
-    return NextResponse.json({ work: project, description: parse(description) }, { status: 200 });
+    return NextResponse.json({ work: project, description: marked(description) }, { status: 200 });
 }

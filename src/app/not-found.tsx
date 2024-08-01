@@ -2,6 +2,8 @@
  * @author Ollie Beenham
  */
 
+"use client";
+
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Metadata } from "next";
@@ -11,7 +13,7 @@ export const metadata: Metadata = {
     description: "The requested location or resource could not be found on our servers. Please check the URL and try again.",
 };
 
-export default function NotFoundPage() {
+export default function NotFound() {
     return (
         <div className="h-[calc(100dvh-80px)] flex flex-col items-center justify-center">
             <Container>
