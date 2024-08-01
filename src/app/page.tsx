@@ -2,10 +2,23 @@ import { Container } from "@/components/Container";
 import Hero from "@/components/Hero";
 import { Metadata } from "next";
 
+const title = "Alice Corker - My Story";
+const description = "I'm just a girl. Just an ordinary girl, who has dedicated her life to writing. My name is Alice, and this is my story.";
+
 export const metadata: Metadata = {
-    metadataBase: new URL("https://corkera.co.uk/img/meta"),
-    title: "Alice Corker - My Story",
-    description: "I'm just a girl. Just an ordinary girl, who has dedicated her life to writing. My name is Alice, and this is my story.",
+    title,
+    description,
+    openGraph: {
+        title,
+        description,
+        type: "website",
+        url: `https://www.corkera.co.uk`,
+    },
+    twitter: {
+        title,
+        description,
+        card: "summary_large_image",
+    },
 };
 
 export default function Home() {

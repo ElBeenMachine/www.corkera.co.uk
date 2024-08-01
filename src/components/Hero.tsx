@@ -16,11 +16,7 @@ export default function Hero() {
                         <span className="text-white">”</span>
                     </h1>
                 </div>
-                <img
-                    className="hidden md:block w-1/2 h-full object-center object-cover"
-                    alt="Hero Header"
-                    src={"https://media.journoportfolio.com/users/385931/images/62e5500e-7e29-4f0c-8796-a223a0c2687d.jpg"}
-                />
+                <img className="hidden md:block w-1/2 h-full object-center object-cover" alt="Hero Header" src={"/img/theme-01.webp"} />
             </div>
         </div>
     );
