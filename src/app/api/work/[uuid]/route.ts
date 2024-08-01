@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 import { parse } from "marked";
 import work from "@/lib/work/work";
 
-export function GET(req: Request, { params }: { params: { uuid: string } }) {
+export async function GET(req: Request, { params }: { params: { uuid: string } }) {
     // Define the project and description variables
     let project, description;
 
@@ -16,7 +16,7 @@ export function GET(req: Request, { params }: { params: { uuid: string } }) {
 
     // If the project is not found in the poetry category, try the creative non fiction category
     if (!project) {
-        project = work["creatinve-non-fiction"].find((p) => p.uuid === params.uuid);
+        project = work["creative-non-fiction"].find((p) => p.uuid === params.uuid);
     }
 
     // If the project is still not found, return a 404 error
@@ -26,12 +26,15 @@ export function GET(req: Request, { params }: { params: { uuid: string } }) {
     try {
         description = readFileSync(`./src/lib/work/${project?.uuid}.md`, "utf-8");
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return NextResponse.json({ error: "Error loading project description" }, { status: 500 });
     }
 
     // If the description is not found, return a 404 error
     if (!description) return NextResponse.json({ error: "Project description not found" }, { status: 404 });
+
+    // Introduce a 2-second delay using a Promise
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     // Return the project and the parsed description
     return NextResponse.json({ work: project, description: parse(description) }, { status: 200 });

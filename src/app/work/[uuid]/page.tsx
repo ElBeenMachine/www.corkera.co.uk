@@ -2,45 +2,30 @@
  * @author Ollie Beenham
  */
 
-"use client";
+import work from "@/lib/work/work";
+import WorkContent from "@/components/WorkContent";
+import { Suspense } from "react";
+import { Loading } from "@/components/LoadingSkeleton";
 
-import { Container } from "@/components/Container";
-import { Work } from "@/lib/interfaces/Work.interface";
-import { notFound, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+export async function generateMetadata({ params }: { params: { uuid: string } }) {
+    // Loop through all the works and find the one with the matching uuid
+    let piece = work.poetry.find((piece) => piece.uuid === params.uuid);
 
-export default function Piece({ params }: { params: { uuid: string } }) {
-    const [work, setWork] = useState<Work | null>(null);
-    const [description, setDescription] = useState(null);
+    if (!piece) piece = work["creative-non-fiction"].find((piece) => piece.uuid === params.uuid);
 
-    useEffect(() => {
-        console.log("Loading work...");
+    if (!piece) return { title: "An Original Piece By Alice Corker" };
 
-        const loadWork = async () => {
-            const workRequest = await fetch(`/api/work/${params.uuid}`);
-            const workData = await workRequest.json();
+    return {
+        title: `${piece.title} - By Alice Corker`,
+    };
+}
 
-            if(workData.error) {
-                return notFound();
-            }
-
-            setWork(workData.work);
-            setDescription(workData.description);   
-        }
-
-        loadWork();
-    }, []);
-
+export default async function Piece({ params }: { params: { uuid: string } }) {
     return (
-        <Container>
-            <h1>{work?.title}</h1>
-            {description && (
-                <div
-                    id="work-description"
-                    className="w-full"
-                    dangerouslySetInnerHTML={{ __html: description }}
-                ></div>
-            )}
-        </Container>
-    )
+        <main className="py-12">
+            <Suspense fallback={"LOADING"}>
+                <WorkContent uuid={params.uuid} />
+            </Suspense>
+        </main>
+    );
 }
