@@ -4,7 +4,6 @@
 
 import { Container } from "@/components/Container";
 import PageHeader from "@/components/PageHeader";
-import QuoteBox from "@/components/QuoteBox";
 import work from "@/lib/work/work";
 import { formatDate } from "@/utils/dateOperations";
 import { Metadata } from "next";
@@ -63,7 +62,6 @@ export default function MyPoetry() {
                     </div>
                 </div>
             </Container>
-            <QuoteBox quote={"In the end, we'll all become stories."} author={"Margaret Atwood"} />
         </main>
     );
 }
