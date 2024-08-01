@@ -14,10 +14,14 @@ export default function ContactForm() {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const message = formData.get("message");
+        const name = formData.get("name") as string;
+        const email = formData.get("email") as string;
+        let message = formData.get("message") as string;
 
+        // Create the mailto link, while ensuring the message new lines are preserved
+        const messageLines = message.split("\n");
+        message = messageLines.join("%0a");
+        // Convert the message into a URL friendly format
         const mailto = `mailto:hello@corkera.co.uk?subject=Contact Form Submission&body=Name: ${name}%0aEmail: ${email}%0a%0aMessage:%0a${message}`;
 
         // Open the mailto link
@@ -55,6 +59,7 @@ export default function ContactForm() {
                             className="w-full border border-gray-800 rounded-md px-5 py-4"
                             aria-autocomplete="none"
                             autoFocus
+                            required
                         />
                     </div>
 
@@ -68,6 +73,7 @@ export default function ContactForm() {
                             name="email"
                             className="w-full border border-gray-800 rounded-md px-5 py-4"
                             aria-autocomplete="none"
+                            required
                         />
                     </div>
 
@@ -75,7 +81,7 @@ export default function ContactForm() {
                         <label htmlFor="message" className="absolute -top-[0.65rem] px-2 left-4 h-5 z-5 bg-white">
                             Message
                         </label>
-                        <textarea id="message" name="message" className="w-full border border-gray-800 rounded-md px-5 py-4" rows={5} />
+                        <textarea id="message" name="message" className="w-full border border-gray-800 rounded-md px-5 py-4" rows={5} required />
                     </div>
                     <button
                         type="submit"
