@@ -14,8 +14,3 @@
 
 -   **Jenkins CI/CD** for automatic **kubernetes** deployment
 -   Contact form
-
-## Contributors
-
-<table>
-</table>
