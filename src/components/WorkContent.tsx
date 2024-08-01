@@ -41,7 +41,8 @@ export default function WorkContent({ uuid }: { uuid: string }) {
 
             {work && description && !loading && (
                 <Container>
-                    <h1 className="mb-8 text-4xl font-semibold">{work.title}</h1>
+                    <h1 className="text-4xl font-semibold">{work.title}</h1>
+                    <h2 className="mb-6 text-lg opacity-40">By Alice Corker</h2>
                     {description && <div id="work-description" className="w-full" dangerouslySetInnerHTML={{ __html: description }}></div>}
                 </Container>
             )}

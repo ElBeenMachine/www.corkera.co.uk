@@ -39,15 +39,6 @@ export default function Footer() {
                         >
                             Creative Writing at LJMU
                         </Link>
-                        <Link href="#" target="_blank" className="w-max transition-all hover:opacity-60">
-                            Link 2
-                        </Link>
-                        <Link href="#" target="_blank" className="w-max transition-all hover:opacity-60">
-                            Link 3
-                        </Link>
-                        <Link href="#" target="_blank" className="w-max transition-all hover:opacity-60">
-                            Link 4
-                        </Link>
                     </div>
                 </div>
                 <p className="text-center opacity-40 text-xs mt-12">
