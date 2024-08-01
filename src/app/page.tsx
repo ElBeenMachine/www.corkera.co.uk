@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://corkera.co.uk/img/meta"),
     title: "Alice Corker - My Story",
     description: "I'm just a girl. Just an ordinary girl, who has dedicated her life to writing. My name is Alice, and this is my story.",
 };
