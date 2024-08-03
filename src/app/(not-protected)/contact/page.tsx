@@ -4,6 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://www.corkera.co.uk"),
     title: "Alice Corker - Contact Me",
     description: "This is my portfolio.",
 };

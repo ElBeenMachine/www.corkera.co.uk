@@ -9,6 +9,7 @@ import { Container } from "@/components/Container";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://www.corkera.co.uk"),
     title: "404 - Page Not Found",
     description: "The requested location or resource could not be found on our servers. Please check the URL and try again.",
 };
