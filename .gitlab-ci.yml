@@ -1,0 +1,94 @@
+# Define the stages
+stages:
+    - prepare
+    - build
+    - deploy
+
+# Set default image and services
+default:
+    image: docker:24.0.5
+    services:
+        - docker:24.0.5-dind
+    before_script:
+        - until docker info; do sleep 1; done
+        - echo "$AZURECR_PASSWORD" | docker login $AZURECR_HOST -u $AZURECR_USER --password-stdin
+
+# Define the variables
+variables:
+    PROJECT_NAME: alice-portfolio
+    IMAGE_NAME: $AZURECR_HOST/$PROJECT_NAME
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+
+# Prepare the job
+prepare:
+    stage: prepare
+    image: node:alpine
+    script:
+        - export TAG=$(node -p "require('./package.json').version")
+        - echo "TAG=$TAG" >> variables.env
+    before_script: []
+    services: []
+    artifacts:
+        reports:
+            dotenv: variables.env
+
+# Build the image for AMD64 architecture
+build_amd64:
+    stage: build
+    needs:
+        - job: prepare
+          artifacts: true
+    script:
+        - docker pull "$IMAGE_NAME:latest" || true
+        - docker build .
+          --build-arg BUILDKIT_INLINE_CACHE=1
+          --cache-from $IMAGE_NAME:latest
+          --tag "$IMAGE_NAME:latest"
+          --tag "$IMAGE_NAME:$TAG"
+          # --build-arg DASHBOARD_URL="https://dash.corkera.co.uk"
+          # --build-arg ANALYTICS_ID=""
+        - docker push $IMAGE_NAME:latest
+        - docker push $IMAGE_NAME:$TAG
+    tags:
+        - prod
+
+# Build the image for ARM64 architecture
+build_arm64:
+    stage: build
+    needs:
+        - job: prepare
+          artifacts: true
+    script:
+        - docker pull "$IMAGE_NAME:latest-arm64" || true
+        - docker build .
+          --build-arg BUILDKIT_INLINE_CACHE=1
+          --cache-from $IMAGE_NAME:latest-arm64
+          --tag "$IMAGE_NAME:latest-arm64"
+          --tag "$IMAGE_NAME:$TAG-arm64"
+          # --build-arg DASHBOARD_URL="https://dash.corkera.co.uk"
+          # --build-arg ANALYTICS_ID=""
+        - docker push $IMAGE_NAME:latest-arm64
+        - docker push $IMAGE_NAME:$TAG-arm64
+    tags:
+        - arm_kubernetes
+
+# Deploy the image to local kubernetes cluster
+deploy:
+    stage: deploy
+    image: cylab/kubectl
+    needs:
+        - job: build_arm64
+        - job: prepare
+          artifacts: true
+    before_script:
+        # Load the base64 encoded kubeconfig
+        - echo "$KUBECONFIG_B64" | base64 -d > kubeconfig
+        - export KUBECONFIG=kubeconfig
+        - cat kubeconfig
+    services: []
+    script:
+        # Deploy the image to the local kubernetes cluster
+        - kubectl set image deployment/alice-portfolio alice-portfolio=$IMAGE_NAME:$TAG-arm64
+    tags:
+        - prod
